@@ -1,0 +1,48 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+GET     /login                              controllers.Application.login()
+POST    /login                              controllers.Application.authenticate()
+GET     /logout                             controllers.Application.logout()
+
+POST  /reportes						controllers.ReporteController.generar()
+GET   /reportes/1				controllers.ReporteController.infografiaUno(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+GET   /reportes/2					controllers.ReporteController.infografiaDos(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+GET   /reportes/3					controllers.ReporteController.infografiaTres(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+GET   /reportes/4					controllers.ReporteController.infografiaCuatro(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+GET   /reportes/5					controllers.ReporteController.infografiaCinco(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+GET   /reportes/6					controllers.ReporteController.infografiaSeis(mes:Long, anio:String, idProvincia:String, idDepartamento:String, idSupervisor:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Rutas Contacto
+GET		/contactos                  controllers.ContactoController.listar(p:Int ?= 0, s ?= "nombre", o ?= "asc", f ?= "")
+GET     /contactos/nuevo            controllers.ContactoController.nuevo()
+POST    /contactos                  controllers.ContactoController.guardar()
+GET     /contactos/:id              controllers.ContactoController.editar(id:Long)
+POST    /contactos/:id              controllers.ContactoController.actualizar(id:Long)
+DELETE  /contactos/:id/delete       controllers.ContactoController.eliminar(id:Long)
+
+# Rutas Campaña
+GET		/campanias					controllers.CampaniaController.listar(p:Int ?= 0, s ?= "descripcion", o ?= "asc", f ?= "")
+GET     /campanias/nuevo            controllers.CampaniaController.nuevo()
+POST    /campanias                  controllers.CampaniaController.guardar()
+GET     /campanias/:id              controllers.CampaniaController.editar(id:Long)
+POST    /campanias/:id              controllers.CampaniaController.actualizar(id:Long)
+DELETE  /campanias/:id/delete       controllers.CampaniaController.eliminar(id:Long)
+GET 	/campanias/:id/correr		controllers.CampaniaController.correr(id:Long)
+
+# Rutas Grupo
+GET		/grupos					 controllers.GrupoController.listar(p:Int ?= 0, s ?= "nombre", o ?= "asc", f ?= "")
+GET     /grupos/nuevo            controllers.GrupoController.nuevo()
+POST    /grupos                  controllers.GrupoController.guardar()
+GET     /grupos/:id              controllers.GrupoController.editar(id:Long)
+POST    /grupos/:id              controllers.GrupoController.actualizar(id:Long)
+DELETE  /grupos/:id/delete       controllers.GrupoController.eliminar(id:Long)
+
+# Map static resources from the /public folder to the /public path
+GET     /assets/*file                       controllers.Assets.at(path="/public", file)

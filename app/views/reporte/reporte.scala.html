@@ -1,0 +1,57 @@
+@(reporteForm: Form[beta.reporte.Reporte], user: seguridad.models.Usuario)
+
+@import helper._
+
+@main(user) {
+
+    @helper.form(routes.ReporteController.generar(), 'id->"formulario_rep") {
+    
+    <p>
+		    @helper.select(
+		    	reporteForm("anio"),
+	    		options(models.campania.Campania.aniosHabilitados(user)),
+	    		'_label -> "Año",
+	    		'_showConstraints -> false,
+	    		'_style -> "width: 200px;" 
+			)</p>
+            	
+            	<p>		
+		    @helper.select(
+		    	reporteForm("elMes"),
+	    		options(models.campania.Campania.mesesHabilitados(user)),
+	    		'_label -> "Mes",
+	    		'_showConstraints -> false
+			)
+</p>
+
+<p>
+            @select(
+                reporteForm("provincia.id"), 
+                options(Provincia.todasLasDelUsuario(user)), 
+                '_label -> "Provincia", '_default -> "-- Elegir uno --",
+                '_showConstraints -> false
+            )
+            </p>
+
+<p>
+            @select(
+                reporteForm("departamento.id"), 
+                options(Departamento.todosLosDelUsuario(user)), 
+                '_label -> "Departamento", '_default -> "-- Elegir uno --",
+                '_showConstraints -> false
+            )
+</p>
+
+<p>
+            @select(
+                reporteForm("supervisor.id"), 
+                options(Contacto.todosLosSupervisoresParaElUsuario(user)), 
+                '_label -> "Supervisor", '_default -> "-- Elegir uno --",
+                '_showConstraints -> false
+            )
+            
+            </p>
+                <button type="submit">Generar Reporte</button>
+        
+    }
+}

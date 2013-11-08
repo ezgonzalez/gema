@@ -1,0 +1,12 @@
+@(mes: Long, anio: String, idProvincia: String, idDepartamento: String, idSupervisor: String, user: seguridad.models.Usuario)
+
+@main(user) {
+<div id="informes">
+	<img src="@routes.ReporteController.infografiaUno(mes, anio, idProvincia, idDepartamento, idSupervisor)" />
+	<img src="@routes.ReporteController.infografiaDos(mes, anio, idProvincia, idDepartamento, idSupervisor)" />
+	<img src="@routes.ReporteController.infografiaTres(mes, anio, idProvincia, idDepartamento, idSupervisor)" />
+	<img src="@routes.ReporteController.infografiaCuatro(mes, anio, idProvincia, idDepartamento, idSupervisor)"/>
+	<img src="@routes.ReporteController.infografiaCinco(mes, anio, idProvincia, idDepartamento, idSupervisor)" />
+	<img src="@routes.ReporteController.infografiaSeis(mes, anio, idProvincia, idDepartamento, idSupervisor)" />
+	</div>
+}
