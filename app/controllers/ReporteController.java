@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -24,8 +25,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import seguridad.models.Usuario;
-import ar.com.gemasms.configuracion.GemaProperties;
 import beta.reporte.Reporte;
+
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
 
 @Security.Authenticated(Secured.class)
 public class ReporteController extends Controller {
@@ -111,6 +114,15 @@ public class ReporteController extends Controller {
 					Usuario.findByEmail(session("dni"))));
 		}
 
+		List<SqlRow> resultado = Ebean
+				.getServer(Usuario.findByEmail(session("dni")).getServer())
+				.createSqlQuery(reporteForm.get().obtenerQuery()).findList();
+
+		if (resultado == null || resultado.size() < 1) {
+			flash("sindatos", "No hay datos para los filtros elegidos");
+			return redirect(routes.Application.index());
+		}
+
 		Reporte reporte = reporteForm.get();
 
 		return ok(views.html.reporte.listar
@@ -142,6 +154,7 @@ public class ReporteController extends Controller {
 		parametros.put("p_mes", mes);
 
 		parametros.put("p_tabla", "v_informe_campania_por_provincia");
+
 		if (!"".equals(idProvincia)) {
 			parametros.put("p_id_provincia", idProvincia);
 			parametros.put("p_tabla", "v_informe_campania_por_provincia");
@@ -161,15 +174,15 @@ public class ReporteController extends Controller {
 			JasperCompileManager.compileReportToFile(pathRaizReportes + jrxml,
 					pathRaizReportes + jasper);
 
+			JasperPrint report = (JasperPrint) JasperFillManager.fillReport(
+					pathRaizReportes + jasper, parametros, DB
+							.getConnection(Usuario.findByEmail(session("dni"))
+									.getServer()));
+
 			ImageIO.write(obtenerBufferedImage(JasperPrintManager
-					.printPageToImage((JasperPrint) JasperFillManager
-							.fillReport(
-									pathRaizReportes + jasper,
-									parametros,
-									DB.getConnection(Usuario.findByEmail(
-											session("dni")).getServer())), 0,
-							1f)), "JPEG", stream);
+					.printPageToImage(report, 0, 1f)), "JPEG", stream);
 		} catch (JRException e) {
+
 			Logger.of(ReporteController.class).error(
 					"Ocurrio un error al crear el reporte", e);
 		} catch (IOException e) {

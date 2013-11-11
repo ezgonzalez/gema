@@ -3,10 +3,11 @@ package beta.reporte;
 import java.util.HashMap;
 import java.util.Map;
 
-import play.data.validation.Constraints.Required;
 import models.Contacto;
 import models.Departamento;
 import models.Provincia;
+import play.Logger;
+import play.data.validation.Constraints.Required;
 import ar.com.gemasms.util.Mes;
 
 public class Reporte {
@@ -75,23 +76,51 @@ public class Reporte {
 		Map<String, Object> parametros = new HashMap<String, Object>();
 
 		parametros.put("p_anio", anio);
-		parametros.put("p_mes", mes);
+		parametros.put("p_mes", mes.getNumero());
 
-		if (provincia != null) {
+		if (provincia != null && provincia.id != null) {
 			parametros.put("p_id_provincia", provincia.id.toString());
 			parametros.put("p_tabla", "v_informe_campania_por_provincia");
 		}
 
-		if (departamento != null) {
+		if (departamento != null && departamento.id != null) {
 			parametros.put("p_id_departamento", departamento.id.toString());
 			parametros.put("p_tabla", "v_informe_campania_por_departamento");
 		}
 
-		if (supervisor != null) {
+		if (supervisor != null && supervisor.getId() != null) {
 			parametros.put("p_id_supervisor", supervisor.getId().toString());
 			parametros.put("p_tabla", "v_informe_campania_por_supervisor");
 		}
 
 		return parametros;
+	}
+
+	public String obtenerQuery() {
+
+		String from = " from v_informe_campania_por_provincia ";
+		String where = " where anio = " + anio + " and mes = "
+				+ mes.getNumero() + " ";
+
+		if (provincia != null && provincia.id != null) {
+			where = where + " and id_provincia = " + provincia.id.toString()
+					+ " ";
+			from = "from v_informe_campania_por_provincia ";
+		}
+
+		if (departamento != null && departamento.id != null) {
+			where = where + " and id_departamento = "
+					+ departamento.id.toString() + " ";
+			from = "from v_informe_campania_por_departamento ";
+		}
+
+		if (supervisor != null && supervisor.getId() != null) {
+			Logger.of("DA").error(supervisor.getId().toString());
+			where = where + " and id_supervisor = "
+					+ supervisor.getId().toString() + " ";
+			from = "from v_informe_campania_por_supervisor ";
+		}
+
+		return "select * " + from + " " + where;
 	}
 }

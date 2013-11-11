@@ -352,7 +352,7 @@ WHERE anio = $P{p_anio} and mes = $P{p_mes} $P!{valor_provincia} $P!{valor_depar
 		<band height="1771" splitType="Stretch">
 			<image>
 				<reportElement x="10" y="0" width="2292" height="1771"/>
-				<imageExpression class="java.lang.String"><![CDATA[".\\imagenes\\info3.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["./imagenes/info3.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="436" y="239" width="176" height="76" forecolor="#FFFFFF"/>

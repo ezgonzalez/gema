@@ -4,7 +4,15 @@
 
 @main(user) {
 
+<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/reportes.css")">
+
     @helper.form(routes.ReporteController.generar(), 'id->"formulario_rep") {
+    
+                @if(flash.contains("sindatos")) {
+                <p class="error">
+                    @flash.get("sindatos")
+                </p>
+            }
     
     <p>
 		    @helper.select(

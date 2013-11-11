@@ -46,7 +46,6 @@ public class Application extends Controller {
 		return ok(views.html.login.render(form(Login.class)));
 	}
 
-	@Security.Authenticated(Secured.class)
 	public static Result authenticate() {
 		Form<Login> loginForm = form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
